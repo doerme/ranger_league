@@ -1,12 +1,14 @@
+import { Gravity } from '../config'
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class ArrowPrefabClass extends cc.Component {
 
 
-    arrowXSpeed: number = 600
+    arrowXSpeed: number = 1000
     arrowYSpeed: number = 0
-    arrowYSpeedA: number = -200
+    arrowYSpeedA: number = -Gravity
 
     // LIFE-CYCLE CALLBACKS:
 

@@ -1,3 +1,5 @@
+import { Gravity } from '../config'
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -7,7 +9,7 @@ export default class ManPreFabClass extends cc.Component {
     manYSpeed: number = 0
 
     // 人体Y轴加速度
-    manYAcceleration: number = -200
+    manYAcceleration: number = -Gravity
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -25,13 +27,14 @@ export default class ManPreFabClass extends cc.Component {
      * 跳起
      */
     jump():void {
-      this.manYSpeed = 200
+      this.manYSpeed = 300
     }
 
     // 人体重力
     _updateMan(dt: any): void {
+      // console.log(dt)
       this.manYSpeed += dt* this.manYAcceleration
-      this.node.y += dt * this.manYSpeed
+      this.node.y += dt * this.manYSpeed + 1/2 * this.manYAcceleration * dt * dt
     }
 
     onCollisionEnter(other: any, self: any) {

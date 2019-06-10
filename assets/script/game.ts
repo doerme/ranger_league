@@ -1,5 +1,5 @@
 const {ccclass, property} = cc._decorator;
-import { IS_DEBUG } from './config'
+import { IS_DEBUG, GROUND_SPEED } from './config'
 
 @ccclass
 export default class GameSceneClass extends cc.Component {
@@ -44,7 +44,7 @@ export default class GameSceneClass extends cc.Component {
     groundArray: Array<cc.Node> = []
 
     // 地面移动速度
-    groundSpeed: number = 100
+    groundSpeed: number = GROUND_SPEED
 
     
 
