@@ -6,6 +6,18 @@ export default class StickBg extends cc.Component {
 
     @property({
         type: cc.Node,
+        displayName: "速度"
+    })
+    speedValueShow: cc.Node = null
+
+    @property({
+        type: cc.Node,
+        displayName: "角度"
+    })
+    rotateValueShow: cc.Node = null
+
+    @property({
+        type: cc.Node,
         displayName: "摇杆节点",
     })
     dot: cc.Node = null;
@@ -31,10 +43,9 @@ export default class StickBg extends cc.Component {
     })
     _radian = null
 
-    _speed: 0          //实际速度
-    _speed1: 1         //一段速度
-    _speed2: 2         //二段速度
-    _opacity: 0        //透明度
+    _speed: number = 0          //实际速度
+    _maxSpeed: number = 100         //最大速度
+    _opacity: number = 0        //透明度
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -43,7 +54,8 @@ export default class StickBg extends cc.Component {
         this.joyCom = this.node.parent.getComponent('stick_game');
         // game组件下的player节点
         // this._playerNode = this._joyCom;
-        console.log('_playerNode', this.playerNode)
+        console.log('_playerNode', this.playerNode, this._angle)
+        console.log('angle', this._angle)
         if(this.joyCom.touchType == Common.TouchType.DEFAULT){
             //对圆圈的触摸监听
             this._initTouchEvent();
@@ -55,6 +67,7 @@ export default class StickBg extends cc.Component {
     }
 
     update (dt) {
+        // console.log('this._speed', this._speed)
         switch (this.joyCom.directionType)
         {
             case Common.DirectionType.ALL:   
@@ -106,9 +119,9 @@ export default class StickBg extends cc.Component {
     //计算角度并返回
     _getAngle(point)
     {
-        
         var pos = this.node.getPosition();
         this._angle = Math.atan2(point.y - pos.y, point.x - pos.x) * (180/Math.PI);
+        this.rotateValueShow.getComponent(cc.Label).string =  this._angle.toFixed(2).toString()
         return this._angle;
     }
 
@@ -117,16 +130,8 @@ export default class StickBg extends cc.Component {
     {
         //触摸点和遥控杆中心的距离
         var distance = this._getDistance(point, this.node.getPosition());
-
-        //如果半径
-        // if(distance < this._radius)
-        // {
-        //     this._speed = this._speed1;
-        // }
-        // else
-        // {
-        //     this._speed = this._speed2;
-        // }
+        this._speed = distance / this._maxSpeed;
+        this.speedValueShow.getComponent(cc.Label).string =  this._speed.toFixed(2).toString()
     }
 
     _touchStartEvent(event) {
@@ -175,7 +180,10 @@ export default class StickBg extends cc.Component {
     }
 
     _touchEndEvent(){
+        const parentNode = this.node.parent.parent.parent
+        console.log('_touchEndEvent stick_bg', this._speed, this._radian, this._angle)
         this.dot.setPosition(this.node.getPosition());
+        parentNode.getComponent('game').addArrow(this._angle * 3, 1000 * this._speed, -this._angle * 1 / 4)
         this._speed = 0;
     }
 }

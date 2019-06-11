@@ -64,11 +64,18 @@ export default class GameSceneClass extends cc.Component {
         this._drawGround()
     }
 
-    // 射箭
-    addArrow(): void{
+    /**
+     * 射箭
+     * @param arrowYSpeed Y轴初始速度 
+     * @param rotation 初始旋转角度
+     */
+    addArrow(arrowYSpeed: number = 0,arrowXSpeed:number = 1000, rotation: number = 0): void{
         console.log(`addArrow`)
         const tmpArrow = cc.instantiate(this.arrowPreFab)
         tmpArrow.setPosition(this.man.x, this.man.y + 20)
+        tmpArrow.getComponent('arrow').arrowYSpeed = arrowYSpeed
+        tmpArrow.getComponent('arrow').arrowXSpeed = arrowXSpeed
+        tmpArrow.getComponent('arrow').node.rotation = rotation
         this.arrowWrap.addChild(tmpArrow)
     }
 

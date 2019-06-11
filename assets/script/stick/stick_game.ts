@@ -130,6 +130,7 @@ export default class NewClass extends cc.Component {
     }
 
     _touchEndEvent(){
+        console.log('_touchEndEvent stick_game')
         this.dot.setPosition(this.ring.node.getPosition());
         this.ring._speed = 0;
     }

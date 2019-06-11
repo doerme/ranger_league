@@ -5,10 +5,25 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class ArrowPrefabClass extends cc.Component {
 
-
+    @property({
+        displayName: "x轴速度",
+    })
     arrowXSpeed: number = 1000
+
+    @property({
+        displayName: "y轴速度",
+    })
     arrowYSpeed: number = 0
+
+    @property({
+        displayName: "y轴加速度",
+    })
     arrowYSpeedA: number = -Gravity
+
+    @property({
+        displayName: "角度增量",
+    })
+    anchorAdd: number = 30
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -22,6 +37,7 @@ export default class ArrowPrefabClass extends cc.Component {
         this.arrowYSpeed+=this.arrowYSpeedA*dt
         this.node.x += this.arrowXSpeed*dt
         this.node.y += this.arrowYSpeed*dt
+        this.node.rotation += this.anchorAdd*dt
     }
 
     update (dt: any) {
